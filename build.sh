@@ -15,7 +15,7 @@ fi
 docker build -t $IMAGE_NAME .
 
 # Tag the image for the appropriate repository
-if [[ $CURRENT_BRANCH == "main" ]]; then
+if [[ $CURRENT_BRANCH == "master" ]]; then
   docker tag $IMAGE_NAME ashwin31081999/prod:latest
   echo "Tagged image as ashwin31081999/prod:latest"
 elif [[ $CURRENT_BRANCH == "dev" ]]; then
