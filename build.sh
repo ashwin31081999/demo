@@ -7,4 +7,5 @@ docker login -u $DOCKER_USER -p $DOCKER_PASS
 docker build -t nodejs .
 docker images
 
-
+# Deploy using docker-compose
+docker-compose up -d
