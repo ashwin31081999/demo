@@ -1,28 +1,13 @@
 #!/bin/bash
+#login into dockerhub:
+docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-# Get the current branch name
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Define the image name
-IMAGE_NAME="my-nginx:latest"
+#building the image:
+docker build -t nodejs .
+docker images
 
-# Delete existing Docker image if it exists
-if [[ $(docker images -q $IMAGE_NAME 2> /dev/null) != "" ]]; then
-  docker rmi -f $IMAGE_NAME
-fi
 
-# Build the Docker image
-docker build -t $IMAGE_NAME .
-
-# Tag the image for the appropriate repository
-if [[ $CURRENT_BRANCH == "master" ]]; then
-  docker tag $IMAGE_NAME ashwin31081999/prod:latest
-  echo "Tagged image as ashwin31081999/prod:latest"
-elif [[ $CURRENT_BRANCH == "dev" ]]; then
-  docker tag $IMAGE_NAME ashwin31081999/dev:latest
-  echo "Tagged image as ashwin31081999/dev:latest"
-else
-  echo "Not on main or dev branch. Exiting."
-  exit 1
-fi
-
+#stopping the already running container:
+docker stop nodejs
+docker rm nodejs
