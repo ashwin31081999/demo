@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# Deploy using docker-compose
+docker-compose up -d
 # Push the Docker image to the appropriate repository
 if [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]]; then
   docker tag nodejs ashwin31081999/prod:latest
@@ -12,6 +13,6 @@ else
   exit 1
 fi
 
-# Deploy using docker-compose
-docker-compose up -d
+
+
 
