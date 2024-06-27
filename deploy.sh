@@ -11,6 +11,6 @@ else
   exit 1
 fi
 
-# Deploy using docker-compose
-docker-compose up -d
+
+
 
