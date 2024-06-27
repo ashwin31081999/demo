@@ -1,41 +1,31 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials-id')
-    }
 
     stages {
-        stage('Checkout') {
+        stage('Login into DockerHub') {
             steps {
-                git branch: 'dev', url: 'https://github.com/ashwin31081999/demo'
+                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
+                }
             }
         }
-        
-        stage('Build') {
+
+
+        stage('Changing the File Permission') {
             steps {
                 sh 'chmod +x build.sh'
-                sh './build.sh'
-            }
-        }
-        
-        stage('Login to Docker Hub') {
-            steps {
-                sh 'docker login -u $DOCKER_HUB_CREDENTIALS_USR -p $DOCKER_HUB_CREDENTIALS_PSW'
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
                 sh 'chmod +x deploy.sh'
+            }
+        }
+
+
+        stage('Executing the File') {
+            steps {
+                sh './build.sh'
                 sh './deploy.sh'
             }
         }
     }
-
-    post {
-        always {
-            cleanWs()
-        }
-    }
 }
+
