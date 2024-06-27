@@ -1,20 +1,15 @@
 #!/bin/bash
-
-# Get current branch
-BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-
-if [ "$BRANCH_NAME" = "dev" ]; then
-  DOCKER_REPO="ashwin31081999/dev"
-elif [ "$BRANCH_NAME" = "master" ]; then
-  DOCKER_REPO="ashwin31081999/prod"
+# Push the Docker image to the appropriate repository
+if [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]]; then
+  docker tag nodejs ashwin31081999/prod:latest
+  docker push ashwin31081999/prod:latest
+elif [[ $(git rev-parse --abbrev-ref HEAD) == "dev" ]]; then
+  docker tag nodejs ashwin31081999/dev:latest
+  docker push ashwin31081999/dev:latest
 else
-  echo "Branch not configured for deployment"
+  echo "Not on master or dev branch. Exiting."
   exit 1
 fi
-
-docker tag nodejs:${BUILD_NUMBER} $DOCKER_REPO:${BUILD_NUMBER}
-docker push $DOCKER_REPO:${BUILD_NUMBER}
-docker push $DOCKER_REPO:latest
 
 
 
