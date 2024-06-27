@@ -7,9 +7,6 @@ docker login -u $DOCKER_USER -p $DOCKER_PASS
 docker build -t nodejs .
 docker images
 
-
 #stopping the already running container:
 docker stop nodejs
 docker rm nodejs
-
-
