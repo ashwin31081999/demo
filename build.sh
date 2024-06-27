@@ -8,5 +8,5 @@ docker build -t nodejs .
 docker images
 
 #stopping the already running container:
-docker stop nodejs
-docker rm nodejs
+docker stop nginx
+docker rm nginx
