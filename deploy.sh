@@ -3,7 +3,7 @@
 if [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]]; then
   docker tag nodejs $DOCKER_BFLASK_IMAGE1
   docker push $DOCKER_BFLASK_IMAGE1
-else [[ $(git rev-parse --abbrev-ref HEAD) == "dev" ]]; then
+elif [[ $(git rev-parse --abbrev-ref HEAD) == "dev" ]]; then
   docker tag nodejs $DOCKER_BFLASK_IMAGE2
   docker push $DOCKER_BFLASK_IMAGE2
 fi
