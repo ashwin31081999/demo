@@ -1,20 +1,16 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker')
-    }
 
     stages {
         stage('Login into DockerHub') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker') {
-                        // Docker login is handled by withRegistry
-                    }
+                withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin docker.io"
                 }
             }
         }
+
 
         stage('Changing the File Permission') {
             steps {
@@ -23,17 +19,12 @@ pipeline {
             }
         }
 
-        stage('Executing the Files') {
+
+        stage('Executing the File') {
             steps {
                 sh './build.sh'
                 sh './deploy.sh'
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
